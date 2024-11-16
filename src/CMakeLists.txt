@@ -1,10 +1,31 @@
 ﻿# CMakeList.txt: проект CMake для sem_3_lab_2; включите исходный код и определения,
 # укажите здесь логику для конкретного проекта.
 
-add_executable (sem_3_lab_2 "sem_3_lab_2.cpp" "sem_3_lab_2.h")
+add_library(example)
 
-if (CMAKE_VERSION VERSION_GREATER 3.14)
-  set_property(TARGET sem_3_lab_2 PROPERTY CXX_STANDARD 20)
+target_sources(example
+  PRIVATE
+    sem_3_lab_2.cpp
+  PUBLIC
+    sem_3_lab_2.h
+  )
+
+target_include_directories(example
+  PUBLIC
+    ${CMAKE_CURRENT_LIST_DIR}
+  )
+
+# we use this to get code coverage
+# flags are only valid with the GNU compiler and on Linux
+if(CMAKE_CXX_COMPILER_ID MATCHES GNU AND CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+  target_compile_options(example
+    PUBLIC
+      "--coverage"
+    )
+  target_link_options(example
+    INTERFACE
+      "--coverage"
+    )
 endif()
 #set(GTEST_ROOT "C:/lib/googletest-1.15.2/build")
 
