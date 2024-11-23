@@ -1,17 +1,26 @@
 name: Simple CI
 
-on: 
+on:
   push:
-    branches:
-      - main
-      - feature/github_actions
+  pull_request:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Run a simple command
-        run: echo "Hello, World!"
+      - uses: actions/checkout@v2
+
+      - name: Configure
+        run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build
+        run: cmake --build build --config Debug
+
+      - name: Test
+        run: |
+          cd build
+          ctest -C Debug --output-on-failure --verbose
