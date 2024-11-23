@@ -1,4 +1,4 @@
-п»ї// ip_filter.h
+// ip_filter.h
 #ifndef IP_FILTER_H
 #define IP_FILTER_H
 
@@ -6,19 +6,19 @@
 #include <vector>
 #include <algorithm>
 
-// Р¤СѓРЅРєС†РёСЏ СЂР°Р·РґРµР»РµРЅРёСЏ СЃС‚СЂРѕРєРё РЅР° С‡Р°СЃС‚Рё РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ СЂР°Р·РґРµР»РёС‚РµР»СЋ
+// Функция разделения строки на части по заданному разделителю
 std::vector<std::string> split(const std::string& str, char d);
 
-// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕР±СЂР°С‚РЅРѕР№ Р»РµРєСЃРёРєРѕРіСЂР°С„РёС‡РµСЃРєРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРё IP-Р°РґСЂРµСЃРѕРІ
+// Функция для обратной лексикографической сортировки IP-адресов
 void sort_ip_pool(std::vector<std::vector<std::string>>& ip_pool);
 
-// Р¤СѓРЅРєС†РёСЏ С„РёР»СЊС‚СЂР°С†РёРё РїРѕ РїРµСЂРІРѕРјСѓ Р±Р°Р№С‚Сѓ
+// Функция фильтрации по первому байту
 std::vector<std::vector<std::string>> filter_by_first_byte(const std::vector<std::vector<std::string>>& ip_pool, int byte);
 
-// Р¤СѓРЅРєС†РёСЏ С„РёР»СЊС‚СЂР°С†РёРё РїРѕ РїРµСЂРІРѕРјСѓ Рё РІС‚РѕСЂРѕРјСѓ Р±Р°Р№С‚Р°Рј
+// Функция фильтрации по первому и второму байтам
 std::vector<std::vector<std::string>> filter_by_first_and_second_bytes(const std::vector<std::vector<std::string>>& ip_pool, int byte1, int byte2);
 
-// Р¤СѓРЅРєС†РёСЏ С„РёР»СЊС‚СЂР°С†РёРё РїРѕ Р»СЋР±РѕРјСѓ Р±Р°Р№С‚Сѓ
+// Функция фильтрации по любому байту
 std::vector<std::vector<std::string>> filter_any_byte(const std::vector<std::vector<std::string>>& ip_pool, int byte);
 
 #endif // IP_FILTER_H

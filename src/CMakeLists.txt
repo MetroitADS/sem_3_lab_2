@@ -8,7 +8,7 @@ target_sources(example
     sem_3_lab_2.cpp
   PUBLIC
     sem_3_lab_2.h
-  )
+   "ip_filter.h" "ip_filter.cpp")
 
 target_include_directories(example
   PUBLIC

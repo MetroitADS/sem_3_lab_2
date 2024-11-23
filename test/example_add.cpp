@@ -22,7 +22,7 @@ TEST(IPFilterTests, SplitTest) {
 
     EXPECT_EQ(result, expected);
 }
-
+/*/
 // Тест для функции sort_ip_pool
 TEST(IPFilterTests, SortIpPoolTest) {
     std::vector<std::vector<int>> ip_pool = { {192, 168, 0, 2}, {10, 0, 0, 1}, {192, 168, 0, 1} };
@@ -42,11 +42,11 @@ TEST(IPFilterTests, FilterByFirstByteTest) {
 
     EXPECT_EQ(result, expected);
 }
-
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+  //*/
+//int main(int argc, char** argv) {
+//    ::testing::InitGoogleTest(&argc, argv);
+//    return RUN_ALL_TESTS();
+//}
 
  /*/
 TEST(example, add) {

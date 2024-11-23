@@ -1,43 +1,92 @@
+// test_ip_filter.cpp
+#include "ip_filter.h"
 #include <gtest/gtest.h>
-#include <vector>
-#include <string>
-#include <algorithm>
 
-// Здесь должны быть ваши функции split, sort_ip_pool и filter_by_first_byte
-// Примерные определения функций
-std::vector<std::string> split(const std::string& str, char delimiter);
-void sort_ip_pool(std::vector<std::vector<int>>& ip_pool);
-std::vector<std::vector<int>> filter_by_first_byte(const std::vector<std::vector<int>>& ip_pool, int first_byte);
+TEST(SplitTest, BasicTests) {
+    // Создаем временные объекты для ожидаемых значений
+    std::vector<std::string> splitExpected1{ "192", "168", "1", "1" };
+    std::vector<std::string> splitExpected2{ "10", "0", "0", "1" };
+    std::vector<std::string> splitExpected3{ "255", "255", "255", "255" };
 
-// Тест для функции split
-TEST(IPFilterTests, SplitTest) {
-    std::string input = "192.168.0.1";
-    char delimiter = '.';
-    std::vector<std::string> expected = { "192", "168", "0", "1" };
-
-    auto result = split(input, delimiter);
-
-    EXPECT_EQ(result, expected);
+    EXPECT_EQ(split("192.168.1.1", '.'), splitExpected1);
+    EXPECT_EQ(split("10.0.0.1", '.'), splitExpected2);
+    EXPECT_EQ(split("255.255.255.255", '.'), splitExpected3);
+    EXPECT_EQ(split("", '.'), std::vector<std::string>{""});
 }
 
-// Тест для функции sort_ip_pool
-TEST(IPFilterTests, SortIpPoolTest) {
-    std::vector<std::vector<int>> ip_pool = { {192, 168, 0, 2}, {10, 0, 0, 1}, {192, 168, 0, 1} };
-    std::vector<std::vector<int>> expected = { {10, 0, 0, 1}, {192, 168, 0, 1}, {192, 168, 0, 2} };
+TEST(SortIpPoolTest, BasicTests) {
+    //Входные тесты
+    std::vector<std::vector<std::string>> ip_pool = {
+        {"192", "168", "1", "1"},
+        {"10", "0", "0", "1"},
+        {"255", "255", "255", "255"},
+        {"172", "16", "0", "1"}
+    };
 
     sort_ip_pool(ip_pool);
 
-    EXPECT_EQ(ip_pool, expected);
+    // Должно выйти
+    std::vector<std::string> expected1{ "255", "255", "255", "255" };
+    std::vector<std::string> expected2{ "192", "168", "1", "1" };
+    std::vector<std::string> expected3{ "172", "16", "0", "1" };
+    std::vector<std::string> expected4{ "10", "0", "0", "1" };
+
+    EXPECT_EQ(ip_pool[0], expected1);
+    EXPECT_EQ(ip_pool[1], expected2);
+    EXPECT_EQ(ip_pool[2], expected3);
+    EXPECT_EQ(ip_pool[3], expected4);
 }
 
-// Тест для функции filter_by_first_byte
-TEST(IPFilterTests, FilterByFirstByteTest) {
-    std::vector<std::vector<int>> ip_pool = { {192, 168, 0, 1}, {10, 0, 0, 1}, {192, 168, 0, 2} };
-    std::vector<std::vector<int>> expected = { {192, 168, 0, 1}, {192, 168, 0, 2} };
+TEST(FilterByFirstByteTest, BasicTests) {
+    std::vector<std::vector<std::string>> ip_pool = {
+        {"192", "168", "1", "1"},
+        {"10", "0", "0", "1"},
+        {"46", "70", "0", "1"},
+        {"46", "100", "0", "1"}
+    };
 
-    auto result = filter_by_first_byte(ip_pool, 192);
+    //вовод только 46
+    auto filtered = filter_by_first_byte(ip_pool, 46);
+    EXPECT_EQ(filtered.size(), 2);
 
-    EXPECT_EQ(result, expected);
+    // Должно выйти
+    std::vector<std::string> expected1{ "46", "70", "0", "1" };
+    std::vector<std::string> expected2{ "46", "100", "0", "1" };
+
+    EXPECT_EQ(filtered[0], expected1);
+    EXPECT_EQ(filtered[1], expected2);
+}
+
+TEST(FilterByFirstAndSecondBytesTest, BasicTests) {
+    std::vector<std::vector<std::string>> ip_pool = {
+        {"192", "168", "1", "1"},
+        {"10", "0", "0", "1"},
+        {"46", "70", "0", "1"},
+        {"46", "100", "0", "1"}
+    };
+
+    auto filtered = filter_by_first_and_second_bytes(ip_pool, 46, 70);
+    EXPECT_EQ(filtered.size(), 1);
+
+    std::vector<std::string> expected{ "46", "70", "0", "1" };
+
+    EXPECT_EQ(filtered[0], expected);
+}
+
+TEST(FilterAnyByteTest, BasicTests) {
+    std::vector<std::vector<std::string>> ip_pool = {
+        {"192", "168", "1", "1"},
+        {"10", "0", "0", "1"},
+        {"46", "70", "0", "1"},
+        {"46", "100", "0", "1"}
+    };
+
+    auto filtered = filter_any_byte(ip_pool, 100);
+    EXPECT_EQ(filtered.size(), 1);
+
+    std::vector<std::string> expected{ "46", "100", "0", "1" };
+
+    EXPECT_EQ(filtered[0], expected);
 }
 
 int main(int argc, char** argv) {

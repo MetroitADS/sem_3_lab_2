@@ -10,12 +10,12 @@ FetchContent_MakeAvailable(gtest)
 
 add_executable(
     unit_tests
-    example_add.cpp
+    test_ip_filter.cpp
+    ip_filter.cpp
     )
 
 target_link_libraries(unit_tests
   PRIVATE
-    example
     gtest_main
   )
 
