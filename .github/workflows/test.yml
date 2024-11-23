@@ -25,10 +25,10 @@ jobs:
           draft: false
           prerelease: false
 
-  release_assets:
-    name: Build and Test
-    runs-on: ubuntu-latest
+  release_assets_ubuntu:
+    name: Release assets
     needs: create_release
+    runs-on: ubuntu-latest
     permissions: write-all
     steps:
       - name: Checkout code
@@ -51,3 +51,29 @@ jobs:
           asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
           asset_path: ./helloworld-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
+
+  release_assets_macos:
+    name: Release assets
+    needs: create_release
+    runs-on: macos-latest
+    permissions: write-all 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: brew install googletest
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
+      - run: cmake --build .
+      - run: cmake --build . --target test
+      - run: cmake --build . --target package
+      - name: Upload release assets
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.pkg
+          asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.pkg
+          asset_content_type: application/productbuild
