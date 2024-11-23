@@ -3,8 +3,6 @@
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
-
-// Функция разделения строки на части по заданному разделителю
 std::vector<std::string> split(const std::string& str, char d)
 {
     std::vector<std::string> r;
@@ -22,7 +20,6 @@ std::vector<std::string> split(const std::string& str, char d)
     return r;
 }
 
-// Функция для обратной лексикографической сортировки IP-адресов
 void sort_ip_pool(std::vector<std::vector<std::string>>& ip_pool)
 {
     std::sort(ip_pool.begin(), ip_pool.end(), [](const std::vector<std::string>& a, const std::vector<std::string>& b) {
@@ -30,7 +27,6 @@ void sort_ip_pool(std::vector<std::vector<std::string>>& ip_pool)
         });
 }
 
-// Функция фильтрации по первому байту
 std::vector<std::vector<std::string>> filter_by_first_byte(const std::vector<std::vector<std::string>>& ip_pool, int byte)
 {
     std::vector<std::vector<std::string>> filtered;
@@ -43,8 +39,6 @@ std::vector<std::vector<std::string>> filter_by_first_byte(const std::vector<std
     }
     return filtered;
 }
-
-// Функция фильтрации по первому и второму байтам
 std::vector<std::vector<std::string>> filter_by_first_and_second_bytes(const std::vector<std::vector<std::string>>& ip_pool, int byte1, int byte2)
 {
     std::vector<std::vector<std::string>> filtered;
@@ -57,8 +51,6 @@ std::vector<std::vector<std::string>> filter_by_first_and_second_bytes(const std
     }
     return filtered;
 }
-
-// Функция фильтрации по любому байту
 std::vector<std::vector<std::string>> filter_any_byte(const std::vector<std::vector<std::string>>& ip_pool, int byte)
 {
     std::vector<std::vector<std::string>> filtered;
