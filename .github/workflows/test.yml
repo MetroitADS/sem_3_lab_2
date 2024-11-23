@@ -75,5 +75,5 @@ jobs:
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
           asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.pkg
-          asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.pkg
+          asset_path: ./helloworld1-0.0.${{ github.run_number }}-Darwin.pkg
           asset_content_type: application/productbuild
